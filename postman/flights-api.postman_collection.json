@@ -1,0 +1,220 @@
+{
+  "info": {
+    "name": "Reserva de Vuelos - Ejercicio 1 (Cache)",
+    "_postman_id": "7a2f5e40-1c3a-4b1e-9d3e-2f6a4b2c8e10",
+    "description": "Coleccion de pruebas para GET /flights: busqueda de vuelos con cache en Redis (llave flights:search:{origin}:{destination}:{date}, TTL 60s).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" }
+  ],
+  "item": [
+    {
+      "name": "1) GET /flights - sin filtros",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/flights",
+          "host": ["{{baseUrl}}"],
+          "path": ["flights"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const data = pm.response.json();",
+              "pm.test('Respuesta trae source y flights', function () {",
+              "  pm.expect(data).to.have.property('source');",
+              "  pm.expect(data).to.have.property('flights');",
+              "  pm.expect(data.flights).to.be.an('array');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "2) GET /flights?origin=SAL&destination=MIA (cache miss)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/flights?origin=SAL&destination=MIA",
+          "host": ["{{baseUrl}}"],
+          "path": ["flights"],
+          "query": [
+            { "key": "origin", "value": "SAL" },
+            { "key": "destination", "value": "MIA" }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const data = pm.response.json();",
+              "pm.test('Primera consulta viene de la base de datos', function () {",
+              "  pm.expect(data.source).to.eql('database');",
+              "});",
+              "",
+              "pm.test('Todos los vuelos son SAL -> MIA', function () {",
+              "  data.flights.forEach((flight) => {",
+              "    pm.expect(flight.origin).to.eql('SAL');",
+              "    pm.expect(flight.destination).to.eql('MIA');",
+              "  });",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "3) GET /flights?origin=SAL&destination=MIA (cache hit)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/flights?origin=SAL&destination=MIA",
+          "host": ["{{baseUrl}}"],
+          "path": ["flights"],
+          "query": [
+            { "key": "origin", "value": "SAL" },
+            { "key": "destination", "value": "MIA" }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const data = pm.response.json();",
+              "pm.test('Segunda consulta identica viene de Redis', function () {",
+              "  pm.expect(data.source).to.eql('redis');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "4) GET /flights?origin=SAL&destination=MIA&date=2026-07-10",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/flights?origin=SAL&destination=MIA&date=2026-07-10",
+          "host": ["{{baseUrl}}"],
+          "path": ["flights"],
+          "query": [
+            { "key": "origin", "value": "SAL" },
+            { "key": "destination", "value": "MIA" },
+            { "key": "date", "value": "2026-07-10" }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const data = pm.response.json();",
+              "pm.test('Agregar date genera una llave/consulta nueva (source: database)', function () {",
+              "  pm.expect(data.source).to.eql('database');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "5) GET /flights?origin=SAL&destination=GUA (combinacion distinta)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/flights?origin=SAL&destination=GUA",
+          "host": ["{{baseUrl}}"],
+          "path": ["flights"],
+          "query": [
+            { "key": "origin", "value": "SAL" },
+            { "key": "destination", "value": "GUA" }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const data = pm.response.json();",
+              "pm.test('Todos los vuelos son SAL -> GUA', function () {",
+              "  data.flights.forEach((flight) => {",
+              "    pm.expect(flight.origin).to.eql('SAL');",
+              "    pm.expect(flight.destination).to.eql('GUA');",
+              "  });",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "6) GET /flights?date=invalido (400 esperado)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/flights?date=10-07-2026",
+          "host": ["{{baseUrl}}"],
+          "path": ["flights"],
+          "query": [
+            { "key": "date", "value": "10-07-2026" }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 400 por formato de fecha invalido', function () {",
+              "  pm.response.to.have.status(400);",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
