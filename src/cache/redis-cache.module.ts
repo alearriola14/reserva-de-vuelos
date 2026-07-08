@@ -11,7 +11,7 @@ import { Module } from '@nestjs/common';
         const port = process.env.REDIS_PORT ?? '6379';
 
         return {
-          stores: [createKeyv(`redis://${host}:${port}`)],
+          stores: [createKeyv(`redis://${host}:${port}`)]
         };
       },
     }),

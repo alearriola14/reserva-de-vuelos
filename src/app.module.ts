@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RedisCacheModule } from './cache/redis-cache.module';
 import { Flight } from './flights/flight.entity';
 import { FlightsModule } from './flights/flights.module';
+import { Seat } from './flights/seats/seat.entity';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { FlightsModule } from './flights/flights.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [Flight],
+      entities: [Flight, Seat],
       synchronize: true,
     }),
     RedisCacheModule,

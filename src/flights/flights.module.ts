@@ -4,10 +4,13 @@ import { Flight } from './flight.entity';
 import { FlightsController } from './flights.controller';
 import { FlightsSeed } from './flights.seed';
 import { FlightsService } from './flights.service';
+import { Seat } from './seats/seat.entity';
+import { SeatsSeed } from './seats/seats.seed';
+import { SeatsService } from './seats/seats.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Flight])],
+  imports: [TypeOrmModule.forFeature([Flight, Seat])],
   controllers: [FlightsController],
-  providers: [FlightsService, FlightsSeed],
+  providers: [FlightsService, FlightsSeed, SeatsService, SeatsSeed],
 })
 export class FlightsModule {}

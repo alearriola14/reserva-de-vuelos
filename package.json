@@ -26,6 +26,7 @@
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/typeorm": "^11.0.0",
     "cache-manager": "^6.4.3",
+    "dotenv": "^17.4.2",
     "keyv": "^5.5.3",
     "pg": "^8.13.1",
     "reflect-metadata": "^0.2.2",
