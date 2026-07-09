@@ -1,5 +1,8 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Patch, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
 import { FlightsService, SearchFlightsResponse } from './flights.service';
+import { CreateReservationDto } from './reservations/create-reservation.dto';
+import { Reservation } from './reservations/reservation.entity';
+import { ReservationsService } from './reservations/reservations.service';
 import { Seat } from './seats/seat.entity';
 import { SeatMapResponse, SeatsService } from './seats/seats.service';
 
@@ -8,6 +11,7 @@ export class FlightsController {
   public constructor(
     private readonly flightsService: FlightsService,
     private readonly seatsService: SeatsService,
+    private readonly reservationsService: ReservationsService,
   ) {  }
 
   @Get()
@@ -31,5 +35,13 @@ export class FlightsController {
     @Body('status') status: string,
   ): Promise<Seat> {
     return this.seatsService.updateSeatStatus(id, seatId, status);
+  }
+
+  @Post(':id/reservations')
+  public async createReservation(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: CreateReservationDto,
+  ): Promise<Reservation> {
+    return this.reservationsService.createReservation(id, dto);
   }
 }

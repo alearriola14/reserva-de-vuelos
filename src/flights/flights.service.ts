@@ -18,6 +18,12 @@ export type SearchFlightsResponse = {
 
 const CACHE_TTL_MS = 60_000;
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+const SEARCH_CACHE_PATTERN = 'flights:search:*';
+
+type RedisLikeClient = {
+  keys(pattern: string): Promise<string[]>;
+  del(keys: string[]): Promise<number>;
+};
 
 @Injectable()
 export class FlightsService {
@@ -49,6 +55,20 @@ export class FlightsService {
     await this.cacheManager.set(cacheKey, flights, CACHE_TTL_MS);
 
     return { source: 'database', flights };
+  }
+
+  public async invalidateSearchCache(): Promise<void> {
+    for (const store of this.cacheManager.stores) {
+      const client = (store.store as { client?: RedisLikeClient }).client;
+      if (!client || typeof client.keys !== 'function') {
+        continue;
+      }
+
+      const keys = await client.keys(SEARCH_CACHE_PATTERN);
+      if (keys.length > 0) {
+        await client.del(keys);
+      }
+    }
   }
 
   private buildCacheKey(origin: string | null, destination: string | null, date: string | null): string {

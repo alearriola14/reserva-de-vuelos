@@ -7,7 +7,10 @@
   },
   "variable": [
     { "key": "baseUrl", "value": "http://localhost:3000" },
-    { "key": "seatId", "value": "" }
+    { "key": "seatId", "value": "" },
+    { "key": "reserveSeatId", "value": "" },
+    { "key": "reserveSeatNumber", "value": "" },
+    { "key": "reservationId", "value": "" }
   ],
   "item": [
     {
@@ -416,6 +419,278 @@
                 "exec": [
                   "pm.test('Status 400 por status invalido', function () {",
                   "  pm.response.to.have.status(400);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Ejercicio 3 - Reservaciones",
+      "item": [
+        {
+          "name": "1) GET /flights/1/seats - obtener asiento disponible",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/flights/1/seats",
+              "host": ["{{baseUrl}}"],
+              "path": ["flights", "1", "seats"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const data = pm.response.json();",
+                  "const availableSeat = data.seats.find((seat) => seat.status === 'available');",
+                  "pm.test('Hay al menos un asiento disponible', function () {",
+                  "  pm.expect(availableSeat).to.not.be.undefined;",
+                  "});",
+                  "",
+                  "pm.collectionVariables.set('reserveSeatId', availableSeat.id);",
+                  "pm.collectionVariables.set('reserveSeatNumber', availableSeat.seatNumber);",
+                  "pm.test('Se guardaron las variables reserveSeatId y reserveSeatNumber', function () {",
+                  "  pm.expect(pm.collectionVariables.get('reserveSeatId')).to.not.be.undefined;",
+                  "  pm.expect(pm.collectionVariables.get('reserveSeatNumber')).to.not.be.undefined;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "2) POST /flights/1/reservations - reserva exitosa",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"seatId\": {{reserveSeatId}},\n  \"passengerName\": \"Carlos López\",\n  \"passengerEmail\": \"carlos@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/flights/1/reservations",
+              "host": ["{{baseUrl}}"],
+              "path": ["flights", "1", "reservations"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () {",
+                  "  pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "const data = pm.response.json();",
+                  "pm.test('Respuesta contiene los campos esperados', function () {",
+                  "  pm.expect(data).to.have.property('id');",
+                  "  pm.expect(data).to.have.property('flightId');",
+                  "  pm.expect(data).to.have.property('seatId');",
+                  "  pm.expect(data).to.have.property('passengerName');",
+                  "  pm.expect(data).to.have.property('passengerEmail');",
+                  "  pm.expect(data).to.have.property('status');",
+                  "  pm.expect(data).to.have.property('confirmationCode');",
+                  "  pm.expect(data).to.have.property('createdAt');",
+                  "});",
+                  "",
+                  "pm.test('flightId es 1', function () {",
+                  "  pm.expect(data.flightId).to.eql(1);",
+                  "});",
+                  "",
+                  "pm.test('seatId coincide con reserveSeatId', function () {",
+                  "  pm.expect(String(data.seatId)).to.eql(pm.collectionVariables.get('reserveSeatId'));",
+                  "});",
+                  "",
+                  "pm.test('status es pending', function () {",
+                  "  pm.expect(data.status).to.eql('pending');",
+                  "});",
+                  "",
+                  "pm.test('confirmationCode es null', function () {",
+                  "  pm.expect(data.confirmationCode).to.be.null;",
+                  "});",
+                  "",
+                  "pm.collectionVariables.set('reservationId', data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "3) POST /flights/1/reservations - overbooking rechazado (409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"seatId\": {{reserveSeatId}},\n  \"passengerName\": \"María García\",\n  \"passengerEmail\": \"maria@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/flights/1/reservations",
+              "host": ["{{baseUrl}}"],
+              "path": ["flights", "1", "reservations"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 409', function () {",
+                  "  pm.response.to.have.status(409);",
+                  "});",
+                  "",
+                  "const data = pm.response.json();",
+                  "pm.test('El mensaje indica que el asiento no esta disponible', function () {",
+                  "  pm.expect(data.message).to.match(/disponible/i);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "4) GET /flights/1/seats - cache invalidada tras reservar",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/flights/1/seats",
+              "host": ["{{baseUrl}}"],
+              "path": ["flights", "1", "seats"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const data = pm.response.json();",
+                  "pm.test('source es database porque la cache fue invalidada', function () {",
+                  "  pm.expect(data.source).to.eql('database');",
+                  "});",
+                  "",
+                  "const reserveSeatId = pm.collectionVariables.get('reserveSeatId');",
+                  "const reservedSeat = data.seats.find((seat) => String(seat.id) === reserveSeatId);",
+                  "pm.test('El asiento reservado aparece como held', function () {",
+                  "  pm.expect(reservedSeat.status).to.eql('held');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "5) GET /flights?origin=SAL&destination=MIA - cache de busqueda invalidada",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/flights?origin=SAL&destination=MIA",
+              "host": ["{{baseUrl}}"],
+              "path": ["flights"],
+              "query": [
+                { "key": "origin", "value": "SAL" },
+                { "key": "destination", "value": "MIA" }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const data = pm.response.json();",
+                  "pm.test('source es database porque la cache de busqueda fue invalidada', function () {",
+                  "  pm.expect(data.source).to.eql('database');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "6) POST /flights/999/reservations - vuelo inexistente (404)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"seatId\": 1,\n  \"passengerName\": \"Test User\",\n  \"passengerEmail\": \"test@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/flights/999/reservations",
+              "host": ["{{baseUrl}}"],
+              "path": ["flights", "999", "reservations"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 404 por vuelo inexistente', function () {",
+                  "  pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "7) POST /flights/1/reservations - asiento inexistente (404)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"seatId\": 99999,\n  \"passengerName\": \"Test User\",\n  \"passengerEmail\": \"test@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/flights/1/reservations",
+              "host": ["{{baseUrl}}"],
+              "path": ["flights", "1", "reservations"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 404 por asiento inexistente', function () {",
+                  "  pm.response.to.have.status(404);",
                   "});"
                 ]
               }
