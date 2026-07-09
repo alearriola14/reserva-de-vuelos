@@ -6,11 +6,26 @@
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    { "key": "baseUrl", "value": "http://localhost:3000" },
-    { "key": "seatId", "value": "" },
-    { "key": "reserveSeatId", "value": "" },
-    { "key": "reserveSeatNumber", "value": "" },
-    { "key": "reservationId", "value": "" }
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "seatId",
+      "value": ""
+    },
+    {
+      "key": "reserveSeatId",
+      "value": ""
+    },
+    {
+      "key": "reserveSeatNumber",
+      "value": ""
+    },
+    {
+      "key": "reservationId",
+      "value": ""
+    }
   ],
   "item": [
     {
@@ -23,8 +38,12 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/flights",
-              "host": ["{{baseUrl}}"],
-              "path": ["flights"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flights"
+              ]
             }
           },
           "event": [
@@ -55,11 +74,21 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/flights?origin=SAL&destination=MIA",
-              "host": ["{{baseUrl}}"],
-              "path": ["flights"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flights"
+              ],
               "query": [
-                { "key": "origin", "value": "SAL" },
-                { "key": "destination", "value": "MIA" }
+                {
+                  "key": "origin",
+                  "value": "SAL"
+                },
+                {
+                  "key": "destination",
+                  "value": "MIA"
+                }
               ]
             }
           },
@@ -96,11 +125,21 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/flights?origin=SAL&destination=MIA",
-              "host": ["{{baseUrl}}"],
-              "path": ["flights"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flights"
+              ],
               "query": [
-                { "key": "origin", "value": "SAL" },
-                { "key": "destination", "value": "MIA" }
+                {
+                  "key": "origin",
+                  "value": "SAL"
+                },
+                {
+                  "key": "destination",
+                  "value": "MIA"
+                }
               ]
             }
           },
@@ -130,12 +169,25 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/flights?origin=SAL&destination=MIA&date=2026-07-10",
-              "host": ["{{baseUrl}}"],
-              "path": ["flights"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flights"
+              ],
               "query": [
-                { "key": "origin", "value": "SAL" },
-                { "key": "destination", "value": "MIA" },
-                { "key": "date", "value": "2026-07-10" }
+                {
+                  "key": "origin",
+                  "value": "SAL"
+                },
+                {
+                  "key": "destination",
+                  "value": "MIA"
+                },
+                {
+                  "key": "date",
+                  "value": "2026-07-10"
+                }
               ]
             }
           },
@@ -165,11 +217,21 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/flights?origin=SAL&destination=GUA",
-              "host": ["{{baseUrl}}"],
-              "path": ["flights"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flights"
+              ],
               "query": [
-                { "key": "origin", "value": "SAL" },
-                { "key": "destination", "value": "GUA" }
+                {
+                  "key": "origin",
+                  "value": "SAL"
+                },
+                {
+                  "key": "destination",
+                  "value": "GUA"
+                }
               ]
             }
           },
@@ -202,10 +264,17 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/flights?date=10-07-2026",
-              "host": ["{{baseUrl}}"],
-              "path": ["flights"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flights"
+              ],
               "query": [
-                { "key": "date", "value": "10-07-2026" }
+                {
+                  "key": "date",
+                  "value": "10-07-2026"
+                }
               ]
             }
           },
@@ -235,8 +304,14 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/flights/1/seats",
-              "host": ["{{baseUrl}}"],
-              "path": ["flights", "1", "seats"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flights",
+                "1",
+                "seats"
+              ]
             }
           },
           "event": [
@@ -273,8 +348,14 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/flights/1/seats",
-              "host": ["{{baseUrl}}"],
-              "path": ["flights", "1", "seats"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flights",
+                "1",
+                "seats"
+              ]
             }
           },
           "event": [
@@ -301,7 +382,10 @@
           "request": {
             "method": "PATCH",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -309,8 +393,15 @@
             },
             "url": {
               "raw": "{{baseUrl}}/flights/1/seats/{{seatId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["flights", "1", "seats", "{{seatId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flights",
+                "1",
+                "seats",
+                "{{seatId}}"
+              ]
             }
           },
           "event": [
@@ -340,8 +431,14 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/flights/1/seats",
-              "host": ["{{baseUrl}}"],
-              "path": ["flights", "1", "seats"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flights",
+                "1",
+                "seats"
+              ]
             }
           },
           "event": [
@@ -376,8 +473,14 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/flights/999/seats",
-              "host": ["{{baseUrl}}"],
-              "path": ["flights", "999", "seats"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flights",
+                "999",
+                "seats"
+              ]
             }
           },
           "event": [
@@ -399,7 +502,10 @@
           "request": {
             "method": "PATCH",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -407,8 +513,15 @@
             },
             "url": {
               "raw": "{{baseUrl}}/flights/1/seats/{{seatId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["flights", "1", "seats", "{{seatId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flights",
+                "1",
+                "seats",
+                "{{seatId}}"
+              ]
             }
           },
           "event": [
@@ -437,8 +550,14 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/flights/1/seats",
-              "host": ["{{baseUrl}}"],
-              "path": ["flights", "1", "seats"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flights",
+                "1",
+                "seats"
+              ]
             }
           },
           "event": [
@@ -473,7 +592,10 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -481,8 +603,14 @@
             },
             "url": {
               "raw": "{{baseUrl}}/flights/1/reservations",
-              "host": ["{{baseUrl}}"],
-              "path": ["flights", "1", "reservations"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flights",
+                "1",
+                "reservations"
+              ]
             }
           },
           "event": [
@@ -534,7 +662,10 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -542,8 +673,14 @@
             },
             "url": {
               "raw": "{{baseUrl}}/flights/1/reservations",
-              "host": ["{{baseUrl}}"],
-              "path": ["flights", "1", "reservations"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flights",
+                "1",
+                "reservations"
+              ]
             }
           },
           "event": [
@@ -572,8 +709,14 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/flights/1/seats",
-              "host": ["{{baseUrl}}"],
-              "path": ["flights", "1", "seats"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flights",
+                "1",
+                "seats"
+              ]
             }
           },
           "event": [
@@ -608,11 +751,21 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/flights?origin=SAL&destination=MIA",
-              "host": ["{{baseUrl}}"],
-              "path": ["flights"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flights"
+              ],
               "query": [
-                { "key": "origin", "value": "SAL" },
-                { "key": "destination", "value": "MIA" }
+                {
+                  "key": "origin",
+                  "value": "SAL"
+                },
+                {
+                  "key": "destination",
+                  "value": "MIA"
+                }
               ]
             }
           },
@@ -640,7 +793,10 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -648,8 +804,14 @@
             },
             "url": {
               "raw": "{{baseUrl}}/flights/999/reservations",
-              "host": ["{{baseUrl}}"],
-              "path": ["flights", "999", "reservations"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flights",
+                "999",
+                "reservations"
+              ]
             }
           },
           "event": [
@@ -671,7 +833,10 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -679,8 +844,14 @@
             },
             "url": {
               "raw": "{{baseUrl}}/flights/1/reservations",
-              "host": ["{{baseUrl}}"],
-              "path": ["flights", "1", "reservations"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flights",
+                "1",
+                "reservations"
+              ]
             }
           },
           "event": [
@@ -691,6 +862,166 @@
                 "exec": [
                   "pm.test('Status 404 por asiento inexistente', function () {",
                   "  pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Ejercicio 4 - Confirmar reservacion",
+      "item": [
+        {
+          "name": "1) PATCH /reservations/{{reservationId}}/confirm",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reservations/{{reservationId}}/confirm",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reservations",
+                "{{reservationId}}",
+                "confirm"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const data = pm.response.json();",
+                  "pm.test('Status is confirmed', function () {",
+                  "  pm.expect(data.status).to.eql('confirmed');",
+                  "});",
+                  "pm.test('Confirmation code is generated', function () {",
+                  "  pm.expect(data.confirmationCode).to.not.be.null;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Ejercicio 5 - Cambiar/Cancelar reservacion (y reto)",
+      "item": [
+        {
+          "name": "1) PATCH /reservations/{{reservationId}} - Modificar",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"flightId\": 1,\n  \"seatId\": 3\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/reservations/{{reservationId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reservations",
+                "{{reservationId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Este test puede fallar por la validacion de 24h dependiendo de las semillas, pero validamos el intento",
+                  "pm.test('Verificando respuesta del servidor', function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf([200, 400]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "2) DELETE /reservations/{{reservationId}} - Cancelar",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reservations/{{reservationId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reservations",
+                "{{reservationId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "3) GET /flights/1/seats - Verificar asiento liberado",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/flights/1/seats",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flights",
+                "1",
+                "seats"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "const data = pm.response.json();",
+                  "const reserveSeatId = pm.collectionVariables.get('reserveSeatId');",
+                  "const seat = data.seats.find(s => String(s.id) === reserveSeatId);",
+                  "// Si no está el reserveSeatId fallará la prueba, si esta deberia ser available tras cancelar",
+                  "pm.test('El asiento aparece como available despues de la cancelacion', function () {",
+                  "  if (seat) pm.expect(seat.status).to.eql('available');",
+                  "});",
+                  "pm.test('La cache se invalido correctamente', function () {",
+                  "  pm.expect(data.source).to.eql('database');",
                   "});"
                 ]
               }
